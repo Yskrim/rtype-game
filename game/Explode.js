@@ -6,10 +6,7 @@ class Explosion {
     active = false;
 }
 
-let exp = []
-let imp = []
-let imp_explosions = [];
-let explosions = [];
+
 
 function explodeAnimate() {
     explosionAnimation();
