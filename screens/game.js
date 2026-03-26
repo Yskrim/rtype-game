@@ -5,9 +5,6 @@
 'use strict'
 let exp = []
 let imp = []
-let imp_explosions = [];
-let explosions = [];
-
 
 let boss = null;
 let enemiesKilled = 0;

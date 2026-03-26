@@ -23,6 +23,10 @@ let backgroundImg;
 let blasterRed;
 let enemiesBullets = [];
 
+/** Shared with game.js / explode.js — must live here so resetGame() can see them. */
+let explosions = [];
+let imp_explosions = [];
+
 let sfxVolumeSlider;
 let musicVolumeSlider; 
 
