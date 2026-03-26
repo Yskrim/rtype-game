@@ -10,9 +10,14 @@ class Bullet{
         this.sprite.velocity.y = vy;
         this.damage = damage
 
-        if(img){
-            img.resize(w*2, h);
-            this.sprite.image = img;
+        if (img) {
+            // Clone before resize — img.resize() mutates the bitmap; all bullets
+            // share the same loadImage() asset, so mutating it rescales every shot.
+            let piece = img.get(0, 0, img.width, img.height);
+            let rw = Math.max(1, Math.round(w * 2));
+            let rh = Math.max(1, Math.round(h));
+            piece.resize(rw, rh);
+            this.sprite.image = piece;
         } 
     }
 
