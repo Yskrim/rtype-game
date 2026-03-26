@@ -126,6 +126,7 @@ function setup() {
     setStars();
     initMainMenu();
     initSettingsScreen();
+    ensureLeaderboard();
     sortLeaderBoard(leaderboard);
     document.addEventListener('visibilitychange', function () {
         if (document.visibilityState === 'visible') {
@@ -235,6 +236,7 @@ function clearCombatEntities() {
 }
 
 function saveScore() {
+    ensureLeaderboard();
     let found = false;
     for (let i = 0; i < leaderboard.leaders.length; i++) {
         if (leaderboard.leaders[i].name === "YOU") {

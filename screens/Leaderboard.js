@@ -1,4 +1,17 @@
+/** Safe default when JSON fails to load (e.g. file://) or returns invalid data. */
+function ensureLeaderboard() {
+    if (!leaderboard || typeof leaderboard !== 'object') {
+        leaderboard = { leaders: [] };
+        return;
+    }
+    if (!Array.isArray(leaderboard.leaders)) {
+        leaderboard.leaders = [];
+    }
+}
+
 function drawLeaderboard(){
+    ensureLeaderboard();
+
     textSize(48);
     textFont('Pixelify Sans')
     
@@ -22,16 +35,24 @@ function drawLeaderboard(){
     }
 }
 
-function sortLeaderBoard(leaderboard){
+function sortLeaderBoard(lb){
+    ensureLeaderboard();
+    if (lb == null) {
+        lb = leaderboard;
+    }
+    if (!lb || !lb.leaders || lb.leaders.length === 0) {
+        return;
+    }
     let temp;
-    for(let  i = 0; i < leaderboard.leaders.length; i++){
-        for(let j = i + 1; j < leaderboard.leaders.length; j++){
-            if(leaderboard.leaders[i].score < leaderboard.leaders[j].score) {
-                temp = leaderboard.leaders[i];
-                leaderboard.leaders[i]= leaderboard.leaders[j];
-                leaderboard.leaders[j] = temp;
-                
-        }
+    for(let  i = 0; i < lb.leaders.length; i++){
+        for(let j = i + 1; j < lb.leaders.length; j++){
+            let a = Number(lb.leaders[i].score);
+            let b = Number(lb.leaders[j].score);
+            if(a < b) {
+                temp = lb.leaders[i];
+                lb.leaders[i]= lb.leaders[j];
+                lb.leaders[j] = temp;
+            }
         }
     }
 }   
