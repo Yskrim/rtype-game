@@ -6,6 +6,54 @@
 
 
 
+let boss = null;
+let enemiesKilled = 0;
+
+function onRegularEnemyKilled() {
+    enemiesKilled++;
+    if (boss != null) return;
+    if (enemiesKilled % 20 !== 0) return;
+    spawnBoss();
+}
+
+function spawnBoss() {
+    if (boss != null || currentState !== GAME) return;
+    let y = random(height / 4, (3 * height) / 4);
+    boss = new Boss(width + 80 * gameScale, y, player2Img);
+    boss.sprite.velocity.x *= difficulty;
+    boss.sprite.velocity.y *= difficulty;
+}
+
+function bossCreateBullets() {
+    if (!boss || currentState !== GAME) return;
+    if (frameCount % Math.max(24, floor(72 / difficulty)) !== 0) return;
+
+    let bx = boss.sprite.position.x - boss.sprite.hw;
+    let by = boss.sprite.position.y;
+    let dy = player.sprite.position.y - by;
+    let dx = player.sprite.position.x - bx;
+    let hyp = sqrt(dx * dx + dy * dy);
+    if (hyp < 1e-6) return;
+
+    let baseAngle = atan2(dy, dx);
+    let spreads = [-22, -11, 0, 11, 22];
+    let spd = enemyBulletVelocity / 1.5;
+
+    for (let k = 0; k < 5; k++) {
+        let a = baseAngle + spreads[k];
+        let vx = cos(a) * spd;
+        let vy = sin(a) * spd;
+        let bullet = new Bullet(bx, by, BULLET_WIDTH, BULLET_HEIGHT, vx, vy, 1, blasterRed);
+        bullet.sprite.rotation = atan2(vy, vx);
+        enemiesBullets.push(bullet);
+    }
+}
+
+function moveBoss() {
+    if (!boss) return;
+    boss.move();
+}
+
 /* ENEMIES SHOOTING LOGIC */
 function enemyBulletsEdgeControl(){
     for(let i = enemiesBullets.length - 1; i >= 0 ; i--) {
@@ -150,6 +198,7 @@ function playerBulletsEdgeControl(){
 let enemies = [];
 
 function spawnEnemies() {
+    if (boss != null) return;
     if(enemies.length === 0){
         if(frameCount%240 === 0) {
             for(let i = 0; i < random (1* difficulty,5* difficulty) ; i++){
@@ -221,12 +270,18 @@ function drawGamePlay(){
 
     // enemy Sprites
     spawnEnemies();
-    moveEnemies()
+    moveEnemies();
     enemySpriteEdgeControl();
+    moveBoss();
 
     // enemy fire
     enemyCreateBullets();
+    bossCreateBullets();
     enemyBulletsEdgeControl();
+
+    if (boss) {
+        boss.drawHealthBar();
+    }
 
     collisionDetection();
     // drawSprites();

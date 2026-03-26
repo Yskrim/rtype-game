@@ -201,6 +201,10 @@ function clearCombatEntities() {
         playerBullets[i].sprite.remove();
     }
     enemies = [];
+    if (typeof boss !== 'undefined' && boss) {
+        boss.reset();
+        boss = null;
+    }
     enemiesBullets = [];
     playerBullets = [];
     if (typeof storedVelocities !== 'undefined') {
@@ -246,6 +250,7 @@ function resetGame(){
     isPaused = false;
     isCounting = false;
     loadGunCounter = 0;
+    enemiesKilled = 0;
     score = 0;
 
     // Скрываем кнопки меню

@@ -1,6 +1,7 @@
 let storedVelocities = {
     player: {x: 0, y: 0},
     enemies: [],
+    boss: null,
     playerBullets: [],
     enemiesBullets: [],
     stars: []
@@ -55,6 +56,17 @@ function pauseGame(){
         enemies[i].sprite.velocity.y = 0;
     }
 
+    if (typeof boss !== 'undefined' && boss && boss.sprite) {
+        storedVelocities.boss = {
+            x: boss.sprite.velocity.x,
+            y: boss.sprite.velocity.y
+        };
+        boss.sprite.velocity.x = 0;
+        boss.sprite.velocity.y = 0;
+    } else {
+        storedVelocities.boss = null;
+    }
+
     
     // pause Player Bullets
 
@@ -103,6 +115,11 @@ function unpauseGame(){
         enemies[i].sprite.velocity.y = storedVelocities.enemies[i].y;
     }
 
+    if (storedVelocities.boss && typeof boss !== 'undefined' && boss && boss.sprite) {
+        boss.sprite.velocity.x = storedVelocities.boss.x;
+        boss.sprite.velocity.y = storedVelocities.boss.y;
+    }
+
     // unpause stars 
 
     /*for(let i = 0; i < stars.length; i++) {
@@ -123,6 +140,7 @@ function unpauseGame(){
     }
     isPaused = false;
     storedVelocities.enemies = [];
+    storedVelocities.boss = null;
     storedVelocities.playerBullets = [];
     storedVelocities.enemiesBullets = [];
     /* storedVelocities.stars = []; */

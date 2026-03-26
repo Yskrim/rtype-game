@@ -15,7 +15,9 @@ function spriteAabbOverlap(s0, s1) {
 
 function collisionDetection(){
     playerBulletsCollisions();
+    playerBulletsBossCollisions();
     shipsCollisions();
+    shipsBossCollisions();
     enemyBulletCollision();
     bulletsCollide();
 }
@@ -36,7 +38,8 @@ function playerBulletsCollisions(){
                     createExplosion(enemies[j].sprite.position.x - 40 * gameScale, enemies[j].sprite.position.y - 40 * gameScale);
                     score += 100;
                     enemies[j].sprite.remove();
-                    enemies.splice(j, 1);  
+                    enemies.splice(j, 1);
+                    onRegularEnemyKilled();
                 }
                 if(playerBullets[i].damage - temp <= 0){
                     sounds.hit.play();
@@ -79,9 +82,73 @@ function shipsCollisions(){
             player.sprite.velocity.y *= -0.5
             
             enemies[j].sprite.remove();
-            enemies.splice(j, 1);   
-            //
-            
+            enemies.splice(j, 1);
+            onRegularEnemyKilled();
+        }
+    }
+}
+
+function playerBulletsBossCollisions(){
+    if(!boss) return;
+    for(let i = playerBullets.length-1; i >=0 ; i--){
+        if (spriteAabbOverlap(playerBullets[i].sprite, boss.sprite)) {
+            let temp = boss.health;
+            boss.health -= playerBullets[i].damage;
+            if(boss.health > 0){
+                createImpact(playerBullets[i].sprite.position.x - BULLET_WIDTH, playerBullets[i].sprite.position.y - BULLET_HEIGHT, 40 * gameScale);
+                score += 20;
+            }
+            if(boss.health <= 0) {
+                sounds.exp.play();
+                createExplosion(boss.sprite.position.x - 40 * gameScale, boss.sprite.position.y - 40 * gameScale);
+                score += 400;
+                boss.reset();
+                boss = null;
+            }
+            if(playerBullets[i].damage - temp <= 0){
+                sounds.hit.play();
+                playerBullets[i].remove();
+                playerBullets.splice(i, 1);
+            } else {
+                playerBullets[i].damage -= temp;
+            }
+            break;
+        }
+    }
+}
+
+function shipsBossCollisions(){
+    if(!boss) return;
+    if (spriteAabbOverlap(boss.sprite, player.sprite)) {
+        player.health -= 1;
+
+        if (player.health <= 0) {
+            currentState = GAME_OVER;
+            clearCombatEntities();
+            player.reset();
+            return;
+        }
+
+        boss.health -= 8;
+
+        if(player.sprite.velocity.x <= 1){
+            player.sprite.velocity.x = 1;
+        }
+        if(player.sprite.velocity.y <= 1){
+            let bvy = boss.sprite.velocity.y;
+            player.sprite.velocity.y = abs(bvy) > 1e-6 ? (-bvy / abs(bvy)) * 1 : random(-1, 1);
+        }
+
+        sounds.exp.play();
+        createExplosion(boss.sprite.position.x - 40 * gameScale, boss.sprite.position.y - 40 * gameScale);
+
+        player.sprite.velocity.x *= -0.5;
+        player.sprite.velocity.y *= -0.5;
+
+        if(boss.health <= 0) {
+            score += 400;
+            boss.reset();
+            boss = null;
         }
     }
 }
