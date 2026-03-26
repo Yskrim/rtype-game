@@ -68,36 +68,27 @@ function createPlayerBullet(w, h, damage, bullet_img){
 }
 
 function keyReleased(){
-    
-        if (key === ' '){
+    if (key !== ' ') return;
 
-            if(currentState != PAUSED){
-
-                isCounting = false;
-                if(!sounds.loaded.isPlaying){
-                 sounds.loaded.play();
-                }
-                
-                if (sounds.loadUp.isPlaying()) {
-                    sounds.loadUp.stop(); 
-                }
-                
-                if(loadGunCounter >= 50 * difficulty) {
-                    
-                    sounds.bigShoot.play();     
-                    createPlayerBullet(3, 3,PLAYER_BULLET_DAMAGE * 100, blasterBig);
-                    
-                } else {
-                    sounds.shoot.play()
-                    createPlayerBullet(1, 1,PLAYER_BULLET_DAMAGE * difficulty, blasterBlue);
-                }
-            
-    
-            }
-            loadGunCounter = 0;
-            hasPlayed = false;
-            isCounting = false;
+    if (currentState === GAME) {
+        isCounting = false;
+        if(!sounds.loaded.isPlaying){
+            sounds.loaded.play();
+        }
+        if (sounds.loadUp.isPlaying()) {
+            sounds.loadUp.stop();
+        }
+        if(loadGunCounter >= 50 * difficulty) {
+            sounds.bigShoot.play();
+            createPlayerBullet(3, 3, PLAYER_BULLET_DAMAGE * 100, blasterBig);
+        } else {
+            sounds.shoot.play();
+            createPlayerBullet(1, 1, PLAYER_BULLET_DAMAGE * difficulty, blasterBlue);
+        }
     }
+    loadGunCounter = 0;
+    hasPlayed = false;
+    isCounting = false;
 }
 
 
@@ -105,6 +96,8 @@ function keyReleased(){
 
 let hasPlayed = false;
 function playerShoot() {
+    if (currentState !== GAME) return;
+
     if(keyIsDown(32)){
         
         isCounting = true;
