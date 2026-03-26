@@ -14,6 +14,8 @@ var enemyBulletVelocity = 10;
 var BASE_PLAYER_BULLET_VX = 10;
 var BASE_PLAYER_BULLET_VY = 0;
 var PLAYER_BULLET_DAMAGE = 1;
+/** Charged big shot: pierce damage budget (see createPlayerBullet). */
+var BIG_BULLET_DAMAGE = 20;
 
 function refreshGameLayout() {
     gameScale = (width / GAME_REF_WIDTH) * SPRITE_SCREEN_SCALE;

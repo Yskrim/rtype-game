@@ -128,7 +128,7 @@ function keyReleased(){
         }
         if(loadGunCounter >= 50 * difficulty) {
             sounds.bigShoot.play();
-            createPlayerBullet(3, 3, PLAYER_BULLET_DAMAGE * 100, blasterBig);
+            createPlayerBullet(3, 3, BIG_BULLET_DAMAGE, blasterBig);
         } else {
             sounds.shoot.play();
             createPlayerBullet(1, 1, PLAYER_BULLET_DAMAGE * difficulty, blasterBlue);
