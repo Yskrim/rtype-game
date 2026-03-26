@@ -26,6 +26,11 @@ let enemiesBullets = [];
 let sfxVolumeSlider;
 let musicVolumeSlider; 
 
+let exp = []
+let imp = []
+let imp_explosions = [];
+let explosions = [];
+
 /** In-memory dummy leaderboard (no JSON load — avoids file:// / fetch issues). */
 let leaderboard = {
     leaders: [
