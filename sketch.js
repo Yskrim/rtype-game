@@ -89,6 +89,14 @@ function preload(){
     
     setSfxVolume(sfxVolume);
     setMusicVolume(musicVolume);
+
+    for (let k in sounds) {
+        try {
+            if (sounds[k] && typeof sounds[k].playMode === 'function') {
+                sounds[k].playMode('restart');
+            }
+        } catch (e) { /* ignore */ }
+    }
 }
 
 
@@ -118,8 +126,17 @@ function setup() {
     setStars();
     initMainMenu();
     initSettingsScreen();
-    sortLeaderBoard();
+    sortLeaderBoard(leaderboard);
+    document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible') {
+            resumeP5AudioIfNeeded();
+        }
+    });
     //setAnimSprites();
+}
+
+function mousePressed() {
+    resumeP5AudioIfNeeded();
 }
 
 function windowResized() {
@@ -135,6 +152,7 @@ function windowResized() {
 
 
 function draw() {
+    resumeP5AudioIfNeeded();
 
     switch(currentState) {
         case LOADING:
@@ -174,6 +192,7 @@ function draw() {
 }
 
 function musicSwitch(){
+    resumeP5AudioIfNeeded();
     if (currentState == GAME){
     if(!music.game_theme.isPlaying()){
     music.game_theme.loop();
@@ -229,7 +248,7 @@ function saveScore() {
             name: "YOU",
             score: score
         });
-        sortLeaderBoard();
+        sortLeaderBoard(leaderboard);
     }
 }
 
@@ -266,6 +285,7 @@ function resetGame(){
 
 
 function keyPressed(){
+    resumeP5AudioIfNeeded();
 
     if (key == '1'){
         currentState = MAIN_MENU;

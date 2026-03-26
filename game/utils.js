@@ -1,11 +1,24 @@
 //sounds
 
-function playHoverSound() { //works
+/** Browsers suspend the Web Audio context (e.g. tab in background); resume on interaction and in draw. */
+function resumeP5AudioIfNeeded() {
+    try {
+        if (typeof getAudioContext !== 'function') return;
+        var ctx = getAudioContext();
+        if (ctx && ctx.state === 'suspended') {
+            ctx.resume();
+        }
+    } catch (e) { /* ignore */ }
+}
+
+function playHoverSound() {
+    resumeP5AudioIfNeeded();
     sounds.hover.play();
 }
-function playClickSound() { //works
-        sounds.click.play();
 
+function playClickSound() {
+    resumeP5AudioIfNeeded();
+    sounds.click.play();
 }
 
 //GUI functions

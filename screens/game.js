@@ -118,9 +118,11 @@ function createPlayerBullet(w, h, damage, bullet_img){
 function keyReleased(){
     if (key !== ' ') return;
 
+    resumeP5AudioIfNeeded();
+
     if (currentState === GAME) {
         isCounting = false;
-        if(!sounds.loaded.isPlaying){
+        if (!sounds.loaded.isPlaying()) {
             sounds.loaded.play();
         }
         if (sounds.loadUp.isPlaying()) {

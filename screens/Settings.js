@@ -4,10 +4,12 @@ let difficultyButton;
 
 
 function initSettingsScreen(){
-    sfxVolumeSlider = createSlider(0, 100, (sfxVolume/0.3 * 100));
-    musicVolumeSlider = createSlider(0, 100, (musicVolume/0.3 * 100));
-    sfxVolume = map(sfxVolumeSlider.value(), 0, 100, 0, 0,3);
-    musicVolume = map(musicVolumeSlider.value(),0, 100, 0, 0,3);
+    sfxVolumeSlider = createSlider(0, 100, (sfxVolume / 0.3 * 100));
+    musicVolumeSlider = createSlider(0, 100, (musicVolume / 0.3 * 100));
+    sfxVolume = map(sfxVolumeSlider.value(), 0, 100, 0, 0.3);
+    musicVolume = map(musicVolumeSlider.value(), 0, 100, 0, 0.3);
+    setSfxVolume();
+    setMusicVolume();
 
 
     difficultyButton = createButton("difficulty: EASY");
