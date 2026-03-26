@@ -1,5 +1,5 @@
 //sfx
-const sound_files= {};
+const sound_files={};
 
 sound_files.exp = loadSound("assets/sounds/explosion.mp3");
 sound_files.glitch = loadSound("assets/sounds/glitch.mp3");
@@ -25,8 +25,10 @@ const blaster_big = loadImage('assets/sprites/blasters/blasterBlue.png');
 const blaster_red = loadImage('assets/sprites/blasters/blasterRed.png');
 const background_img = loadImage('assets/background.png');
 
-let sfx_default_volume = 0.15;
-let music_default_volume = 0.15;
+const game_over_video = createVideo('assets/videos/gameover.mp4');
+
+const sfx_default_volume = 0.15;
+const music_default_volume = 0.15;
 
 const exp_anim_arr = [];
 for(let i = 0; i < 6; i++){
@@ -47,4 +49,4 @@ const leaderboard = {
     ]
 };
 
-export {player_img, player_img_2, blaster_big, blaster_blue, blaster_red, background_img, sound_files, music, exp_anim_arr, imp_anim_arr, leaderboard, sfx_default_volume, music_default_volume}
+export {player_img, player_img_2, blaster_big, blaster_blue, blaster_red, background_img, sound_files, music, exp_anim_arr, imp_anim_arr, leaderboard, sfx_default_volume, music_default_volume, game_over_video}

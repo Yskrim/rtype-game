@@ -1,4 +1,4 @@
-// collisions
+import { sound_files } from './assets.js'
 
 /**
  * Axis-aligned box overlap using live sprite position/size.
@@ -34,7 +34,7 @@ function playerBulletsCollisions(){
                 }
                 
                 if(enemies[j].health <= 0) {
-                    sounds.exp.play();
+                    sound_files.exp.play();
                     createExplosion(enemies[j].sprite.position.x - 40 * gameScale, enemies[j].sprite.position.y - 40 * gameScale);
                     score += 100;
                     enemies[j].sprite.remove();
@@ -42,7 +42,7 @@ function playerBulletsCollisions(){
                     onRegularEnemyKilled();
                 }
                 if(playerBullets[i].damage - temp <= 0){
-                    sounds.hit.play();
+                    sound_files.hit.play();
                     playerBullets[i].remove();
                     playerBullets.splice(i, 1);   
                 } else {
@@ -75,7 +75,7 @@ function shipsCollisions(){
                 player.sprite.velocity.y = -enemies[j].sprite.velocity.y / abs(enemies[j].sprite.velocity.y) * 1
             }
 
-            sounds.exp.play();
+            sound_files.exp.play();
             createExplosion(enemies[j].sprite.position.x - 40 * gameScale, enemies[j].sprite.position.y - 40 * gameScale);
 
             player.sprite.velocity.x *= -0.5
@@ -99,14 +99,14 @@ function playerBulletsBossCollisions(){
                 score += 20;
             }
             if(boss.health <= 0) {
-                sounds.exp.play();
+                sound_files.exp.play();
                 createExplosion(boss.sprite.position.x - 40 * gameScale, boss.sprite.position.y - 40 * gameScale);
                 score += 400;
                 boss.reset();
                 boss = null;
             }
             if(playerBullets[i].damage - temp <= 0){
-                sounds.hit.play();
+                sound_files.hit.play();
                 playerBullets[i].remove();
                 playerBullets.splice(i, 1);
             } else {
@@ -139,7 +139,7 @@ function shipsBossCollisions(){
             player.sprite.velocity.y = abs(bvy) > 1e-6 ? (-bvy / abs(bvy)) * 1 : random(-1, 1);
         }
 
-        sounds.exp.play();
+        sound_files.exp.play();
         createExplosion(boss.sprite.position.x - 40 * gameScale, boss.sprite.position.y - 40 * gameScale);
 
         player.sprite.velocity.x *= -0.5;
@@ -165,7 +165,7 @@ function enemyBulletCollision(){
                 return;
             }
 
-            sounds.hit.play()
+            sound_files.hit.play()
             createImpact(enemiesBullets[i].sprite.position.x - BULLET_WIDTH - 20 * gameScale, enemiesBullets[i].sprite.position.y - BULLET_HEIGHT, 40 * gameScale);
             
             
@@ -187,7 +187,7 @@ function bulletsCollide(){
         for(let j = enemiesBullets.length -1; j >= 0; j--){
             if (spriteAabbOverlap(enemiesBullets[j].sprite, playerBullets[i].sprite)) {
                 if(playerBullets[i].damage - enemiesBullets[j].damage <= 0){
-                    sounds.hit.play();
+                    sound_files.hit.play();
                     createImpact(playerBullets[i].sprite.position.x - BULLET_WIDTH, playerBullets[i].sprite.position.y - BULLET_HEIGHT, 30 * gameScale);
                     playerBullets[i].remove();
                     enemiesBullets[j].remove();
@@ -195,7 +195,7 @@ function bulletsCollide(){
                     enemiesBullets.splice(j,1);
                     break;
                 } else {
-                    sounds.hit.play();
+                    sound_files.hit.play();
                     createImpact(enemiesBullets[j].sprite.position.x - BULLET_WIDTH * 2, enemiesBullets[j].sprite.position.y - BULLET_HEIGHT, 30 * gameScale);
                     enemiesBullets[j].remove();
                     enemiesBullets.splice(j,1);

@@ -1,23 +1,9 @@
 import { Player } from './player.js'
 
 // sketch.js
-
-
-
 const player = new Player();
-let enemiesBullets = [];
-
-/** Shared with game.js / explode.js — must live here so resetGame() can see them. */
-
-let sfxVolumeSlider;
-let musicVolumeSlider; 
-
-
-/** In-memory dummy leaderboard (no JSON load — avoids file:// / fetch issues). */
-
-let currentState = MAIN_MENU;
-
-
+const enemiesBullets = [];
+var currentState = MAIN_MENU;
 
 
 function preload(){
@@ -56,8 +42,6 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
     refreshGameLayout();
 
-    video = createVideo('assets/videos/gameover.mp4')
-    video.hide()
     let ph = playerSize;
     let pw = ph * (playerImg.width / playerImg.height);
     player = new Player(100 * gameScale, height / 2, pw, ph, playerImg);
