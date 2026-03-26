@@ -6,8 +6,6 @@ class Explosion {
     active = false;
 }
 
-
-
 function explodeAnimate() {
     explosionAnimation();
     impactAnimation();
