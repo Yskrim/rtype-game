@@ -26,7 +26,14 @@ let enemiesBullets = [];
 let sfxVolumeSlider;
 let musicVolumeSlider; 
 
-let leaderboard;
+/** In-memory dummy leaderboard (no JSON load — avoids file:// / fetch issues). */
+let leaderboard = {
+    leaders: [
+        { name: "WINNER", score: 25000 },
+        { name: "SLAYER", score: 22800 },
+        { name: "MON$TER", score: 13370 }
+    ]
+};
 
 
 const MAIN_MENU = 0;
@@ -84,9 +91,6 @@ function preload(){
         imp[i] = img;
     }
 
-    //leaderboard
-    leaderboard = loadJSON('leaderboard.json');
-    
     setSfxVolume(sfxVolume);
     setMusicVolume(musicVolume);
 
@@ -126,7 +130,6 @@ function setup() {
     setStars();
     initMainMenu();
     initSettingsScreen();
-    ensureLeaderboard();
     sortLeaderBoard(leaderboard);
     document.addEventListener('visibilitychange', function () {
         if (document.visibilityState === 'visible') {
@@ -236,7 +239,6 @@ function clearCombatEntities() {
 }
 
 function saveScore() {
-    ensureLeaderboard();
     let found = false;
     for (let i = 0; i < leaderboard.leaders.length; i++) {
         if (leaderboard.leaders[i].name === "YOU") {

@@ -1,17 +1,4 @@
-/** Safe default when JSON fails to load (e.g. file://) or returns invalid data. */
-function ensureLeaderboard() {
-    if (!leaderboard || typeof leaderboard !== 'object') {
-        leaderboard = { leaders: [] };
-        return;
-    }
-    if (!Array.isArray(leaderboard.leaders)) {
-        leaderboard.leaders = [];
-    }
-}
-
 function drawLeaderboard(){
-    ensureLeaderboard();
-
     textSize(48);
     textFont('Pixelify Sans')
     
@@ -36,7 +23,6 @@ function drawLeaderboard(){
 }
 
 function sortLeaderBoard(lb){
-    ensureLeaderboard();
     if (lb == null) {
         lb = leaderboard;
     }
