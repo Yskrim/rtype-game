@@ -1,0 +1,18 @@
+{
+    "leaders" : [
+        {
+            "name": "MON$TER", 
+            "score" : "13370"
+        },
+
+        {
+            "name": "SLAYER", 
+            "score" : "22800"
+        },
+
+        {
+            "name": "WINNER", 
+            "score" : "25000"
+        }
+    ]
+}

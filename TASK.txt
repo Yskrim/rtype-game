@@ -1,0 +1,114 @@
+GAME "r-type"
+
+Player should be controlled by keyboard 
+
+Enemies must come from the side of the screen in waves.
+
+Requirements: 
+
+1. MULTIPLE SCENES
+
+- loading/splash scene
+- Main menu scene
+- Main game scene 
+- Leaderboard scene
+
+Must be able to navigate between these scenes.
+
+Loading scene can be time oriented.
+
+2. LOOPS AND ARRAYS
+
+- Must use loops to iterate through arrays/groups
+- at least 3 arrays ( 1 of them is for managing  a list of object on the screen like bullets). 
+
+p5play Groups count as arrays 
+
+3. INTERACTIVITY
+
+  Must interact with player using a keyboard 
+  (at least 4 keys)
+
+  mouse is optional
+
+4. IMAGES
+
+  Must be at least 1 image (menu background or smth like that)
+
+5 SPRITES
+
+  - Must use min 3 sprites
+  - Must detect collision
+  - Move independently
+  - Must be animated (change size/colour)
+
+
+6. VIDEO AND SOUND
+
+  - Min 3 sounds and 1 video (like intro to main screen)
+
+
+7. GUI INPUT
+  - min 1 gui input (text/ slider / button/ text box)
+
+
+8. DATA
+
+  Must read data from JSON (each object must have min 3 props)
+
+
+9. STABILITY
+
+  The game must be stable(do a debugging session)
+
+10. CREATIVITY
+
+  creative complexity: 
+  - various enemies, bosses;
+  - dynamic background, day/night cycle, stars;
+  - powerups, heals, shields, weapons;
+
+  - custom fonts
+  -bonuses and live events(like 10 enemies killed bonus)
+  - enemy health is 3 hps
+  
+  -adjustable difficulty (less hps for player, more hps for enemies, faster pase)
+
+11. CODE 
+
+  clean well written code, reuse of variables
+DO: 
+
+1. CANVAS:
+   -resolution 800x800
+   (can make resolution based on the selected scaling option like in prev assessment and call it quality setting)
+
+   - make a star fucntion to add moving stars to the background.
+
+2. PLAYER:
+    An object of a class player that includes
+    -health
+    -sprite with its props
+    -perk
+
+3. CONTROLS:
+
+
+4. ENEMY:
+
+5. COLLISION:
+
+6. VIDEO:
+
+7. AUDIO:
+
+8. Perks:
+    these will be flying guns and hps that will give temporary boosts.
+
+    once collision with player detected, it will change players:
+    -restore 50% of initial health
+    -give gun for the next 10 shots/seconds
+    -give shield for the next 10 seconds
+
+    these perks will drop from killed enemies with say 50% chance
+ 
