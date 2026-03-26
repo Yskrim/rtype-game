@@ -22,7 +22,7 @@ function drawLeaderboard(){
     }
 }
 
-function sortLeaderBoard(){
+function sortLeaderBoard(leaderboard){
     let temp;
     for(let  i = 0; i < leaderboard.leaders.length; i++){
         for(let j = i + 1; j < leaderboard.leaders.length; j++){
