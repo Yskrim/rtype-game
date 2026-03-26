@@ -88,3 +88,48 @@ class Boss {
         rect(left, top, barW * (this.health / this.maxHealth), barH);
     }
 }
+
+export function onRegularEnemyKilled(boss) {
+    enemiesKilled++;
+    if (boss != null) return;
+    if (enemiesKilled % 20 !== 0) return;
+    spawnBoss();
+}
+
+export function spawnBoss(boss) {
+    if (boss != null || currentState !== GAME) return;
+    let y = random(height / 4, (3 * height) / 4);
+    boss = new Boss(width + 80 * gameScale, y, player2Img);
+    boss.sprite.velocity.x *= difficulty;
+    boss.sprite.velocity.y *= difficulty;
+}
+
+export function bossCreateBullets(boss) {
+    if (!boss || currentState !== GAME) return;
+    if (frameCount % Math.max(24, floor(72 / difficulty)) !== 0) return;
+
+    let bx = boss.sprite.position.x - boss.sprite.hw;
+    let by = boss.sprite.position.y;
+    let dy = player.sprite.position.y - by;
+    let dx = player.sprite.position.x - bx;
+    let hyp = sqrt(dx * dx + dy * dy);
+    if (hyp < 1e-6) return;
+
+    let baseAngle = atan2(dy, dx);
+    let spreads = [-22, -11, 0, 11, 22];
+    let spd = enemyBulletVelocity / 1.5;
+
+    for (let k = 0; k < 5; k++) {
+        let a = baseAngle + spreads[k];
+        let vx = cos(a) * spd;
+        let vy = sin(a) * spd;
+        let bullet = new Bullet(bx, by, BULLET_WIDTH, BULLET_HEIGHT, vx, vy, 1, blasterRed);
+        bullet.sprite.rotation = atan2(vy, vx);
+        enemiesBullets.push(bullet);
+    }
+}
+
+export function moveBoss(boss) {
+    if (!boss) return;
+    boss.move();
+}

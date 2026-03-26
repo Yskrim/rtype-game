@@ -1,6 +1,5 @@
 // player.js
-
-class Player{
+export class Player{
   constructor(x,y,w,h,img) {
     this.sprite = createSprite(x, y, w, h);
     this.sprite.physics = 'kinematic';

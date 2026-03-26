@@ -1,60 +1,51 @@
-//settings.js
-let difficultyButton;
+import { sfx_default_volume, music_default_volume, difficulty } from "./scripts/variables.js"
 
 
-
-function initSettingsScreen(){
-    sfxVolumeSlider = createSlider(0, 100, (sfxVolume / 0.3 * 100));
-    musicVolumeSlider = createSlider(0, 100, (musicVolume / 0.3 * 100));
-    sfxVolume = map(sfxVolumeSlider.value(), 0, 100, 0, 0.3);
-    musicVolume = map(musicVolumeSlider.value(), 0, 100, 0, 0.3);
-    setSfxVolume();
-    setMusicVolume();
+const sliders = {};
+sliders.sfx = createSlider(0, 100, (sfx_default_volume / 0.3 * 100));
+sliders.sfx.input(setSfxVolume(sliders.sfx.value()))
+sliders.music = createSlider(0, 100, (music_default_volume / 0.3 * 100));
+sliders.music.input(setSfxVolume(sliders.music.value()))
 
 
-    difficultyButton = createButton("difficulty: EASY");
-    difficultyButton.mouseOver(playHoverSound);
-    difficultyButton.mouseClicked(toggleDifficulty);
-    difficultyButton.hide();
-    // console.log('После создания кнопки:', difficultyButton);
-    
-}
+const difficulty_button = createButton("difficulty: EASY");
+difficulty_button.mouseOver(playHoverSound);
+difficulty_button.mouseClicked(toggleDifficulty);
+
 
 function toggleDifficulty() {
-
-    if (difficulty === 1) {
-        playClickSound();
-        difficulty = 2;
-        difficultyButton.html("difficulty: HARD");
+    playClickSound();
+    if (difficulty === 'EASY') {
+        difficulty = 'HARD';
+        difficulty_button.html("difficulty: HARD");
     } else {
-        playClickSound();
-        difficulty = 1;
-        difficultyButton.html("difficulty: EASY");
-    }
-
-}
-
-function setSfxVolume(){
-    for(let sound in sounds){
-        sounds[sound].setVolume(sfxVolume);
-    }
-}
-function setMusicVolume(){
-    for(let sound in music){
-        music[sound].setVolume(musicVolume);
+        difficulty = 'EASY';
+        difficulty_button.html("difficulty: EASY");
     }
 }
 
+function setSfxVolume(volume){
+    volume = map(volume, 0, 100, 0, 0.3)
+    for(let sound in sound_files){
+        sound_files[sound].setVolume(volume);
+    }
+}
+function setMusicVolume(volume){
+    volume = map(volume, 0, 100, 0, 0.3)
+    for(let sound in music_files){
+        music_files[sound].setVolume(volume);
+    }
+}
 
 function drawSettingsScreen(){
     if (currentState === SETTINGS) {
         fill(255);
         
-        difficultyButton.position(width / 2 - difficultyButton.size().width/2, height / 2 + 100);
+        difficulty_button.position(width / 2 - difficulty_button.size().width/2, height / 2 + 100);
         
         mainMenuButton.show()
         mainMenuButton.position(width / 2 -  mainMenuButton.size().width/2, height / 2 + 140);
-        difficultyButton.show();
+        difficulty_button.show();
         fill(255);
         textSize(20);
         textFont('Pixelify Sans');
@@ -62,8 +53,8 @@ function drawSettingsScreen(){
         text("Music Volume", width/2 - 140, height/2+ 65);
     
         // применяем громкость
-        sfxVolume = map(sfxVolumeSlider.value(), 0,100, 0, 0.3);
-        musicVolume = map(musicVolumeSlider.value(), 0,100, 0, 0.3);
+        sfxVolume = map(sfx_volume_slider.value(), 0,100, 0, 0.3);
+        musicVolume = map(music_volume_slider.value(), 0,100, 0, 0.3);
     
         setSfxVolume(sfxVolume);
         setMusicVolume(musicVolume);
@@ -73,15 +64,15 @@ function drawSettingsScreen(){
 function hideSliders() {
 
     if (currentState === SETTINGS) {
-        sfxVolumeSlider.show();
-        sfxVolumeSlider.position(width/2, height/2);
+        sfx_volume_slider.show();
+        sfx_volume_slider.position(width/2, height/2);
       
-        musicVolumeSlider.show();
-        musicVolumeSlider.position(width/2, height/2+ 50);
+        music_volume_slider.show();
+        music_volume_slider.position(width/2, height/2+ 50);
     } else {
-        sfxVolumeSlider.hide();
-        musicVolumeSlider.hide();
-        difficultyButton.hide();
+        sfx_volume_slider.hide();
+        music_volume_slider.hide();
+        difficulty_button.hide();
     }
 }
 

@@ -1,7 +1,7 @@
+import { music, video } from './music'
+export let hasPlayed3 = false;
 
-let hasPlayed3 = false;
-
-function drawGameOverScreen() {
+export function drawGameOverScreen() {
     background(0)
 
     image(video, 150, 150, width - 300, height - 300);

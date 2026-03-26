@@ -1,89 +1,28 @@
+import { Player } from './player.js'
+
 // sketch.js
-let sounds = {};
-let music = {};
 
-let video;
 
-let stars = [];
-let score = 0;
-let difficulty = 1;
 
-let playerImg;
-let player2Img;
-
-let player;
-
-let playerBullets = [];
-let blasterBlue;
-let blasterBig;
-let bulletSize = 8;
-
-let backgroundImg;
-
-let blasterRed;
+const player = new Player();
 let enemiesBullets = [];
 
 /** Shared with game.js / explode.js — must live here so resetGame() can see them. */
-let explosions = [];
-let imp_explosions = [];
 
 let sfxVolumeSlider;
 let musicVolumeSlider; 
 
 
-
 /** In-memory dummy leaderboard (no JSON load — avoids file:// / fetch issues). */
-let leaderboard = {
-    leaders: [
-        { name: "WINNER", score: 25000 },
-        { name: "SLAYER", score: 22800 },
-        { name: "MON$TER", score: 13370 }
-    ]
-};
-
-
-const MAIN_MENU = 0;
-const LOADING = 1;
-const GAME = 2;
-const SETTINGS = 3;
-const LEADERBOARD = 4;
-const PAUSED = 5;
-const GAME_OVER = 6;
-
 
 let currentState = MAIN_MENU;
 
 
-let sfxVolume = 0.15;
-let musicVolume = 0.15;
+
 
 function preload(){
 
-    //sfx
-    sounds.exp = loadSound("assets/sounds/explosion.mp3");
-    sounds.glitch = loadSound("assets/sounds/glitch.mp3");
-    sounds.hit = loadSound("assets/sounds/hitHurt.wav");
-    sounds.shoot = loadSound("assets/sounds/laserShoot.wav");
-    sounds.bigShoot = loadSound("assets/sounds/bigLaser.wav");
-    sounds.loadUp = loadSound("assets/sounds/synth (3).wav");
-    sounds.loaded = loadSound("assets/sounds/pickupCoin.wav");
-    sounds.hover = loadSound("assets/sounds/click.wav");
-    sounds.click = loadSound("assets/sounds/click2.wav");
 
-
-    //music
-    music.menu_theme = loadSound("assets/sounds/Buckshot Roulette OST - 70K.mp3");
-    music.game_theme = loadSound("assets/sounds/Buckshot_Roulette_OST__General_Release.mp3");
-
- 
-    //sprites
-    playerImg = loadImage('assets/sprites/starship.png');
-    player2Img = loadImage('assets/sprites/rocket.png');
-    blasterBlue = loadImage('assets/sprites/blasters/blasterBlue.png');
-    blasterBig = loadImage('assets/sprites/blasters/blasterBlue.png');
-    blasterRed = loadImage('assets/sprites/blasters/blasterRed.png');
-    
-    backgroundImg = loadImage('assets/background.png');
     
     //explosion
     for(let i = 0; i < 6; i++){
@@ -99,16 +38,7 @@ function preload(){
 
     setSfxVolume(sfxVolume);
     setMusicVolume(musicVolume);
-
-    for (let k in sounds) {
-        try {
-            if (sounds[k] && typeof sounds[k].playMode === 'function') {
-                sounds[k].playMode('restart');
-            }
-        } catch (e) { /* ignore */ }
-    }
 }
-
 
 function applyPlayerLayout() {
     if (!player || !player.sprite || !playerImg) return;
@@ -123,7 +53,6 @@ function applyPlayerLayout() {
 }
 
 function setup() {
-    
     createCanvas(windowWidth, windowHeight);
     refreshGameLayout();
 
@@ -142,11 +71,6 @@ function setup() {
             resumeP5AudioIfNeeded();
         }
     });
-    //setAnimSprites();
-}
-
-function mousePressed() {
-    resumeP5AudioIfNeeded();
 }
 
 function windowResized() {
@@ -160,6 +84,20 @@ function windowResized() {
     setStars();
 }
 
+/**
+ * After the state-specific draw, sync persistent UI (DOM buttons, sliders, music,
+ * starfield, player visibility) to currentState. Those layers don't switch by themselves.
+ */
+function syncUiToCurrentState() {
+    hideMainMenuButtons();
+    hidePausedScreen();
+    hideSliders();
+    musicSwitch();
+    updateStarFieldForState(currentState);
+    if (player && player.sprite) {
+        player.sprite.visible = currentState === GAME;
+    }
+}
 
 function draw() {
     resumeP5AudioIfNeeded();
@@ -189,20 +127,11 @@ function draw() {
             break;
 
     }
-    
-    //main menu switch
-    hideMainMenuButtons();
-    hidePausedScreen();
-    hideSliders();
-    musicSwitch();
-    updateStarFieldForState(currentState);
-    if (player && player.sprite) {
-        player.sprite.visible = currentState === GAME;
-    }
+
+    syncUiToCurrentState();
 }
 
 function musicSwitch(){
-    resumeP5AudioIfNeeded();
     if (currentState == GAME){
     if(!music.game_theme.isPlaying()){
     music.game_theme.loop();
@@ -291,9 +220,6 @@ function resetGame(){
     currentState = GAME;
 }
 
-
-
-
 function keyPressed(){
     resumeP5AudioIfNeeded();
 
@@ -330,3 +256,5 @@ function keyPressed(){
     }
 
 } 
+
+

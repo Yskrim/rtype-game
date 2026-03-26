@@ -1,28 +1,19 @@
 //sounds
 
-/** Browsers suspend the Web Audio context (e.g. tab in background); resume on interaction and in draw. */
-function resumeP5AudioIfNeeded() {
-    try {
-        if (typeof getAudioContext !== 'function') return;
-        var ctx = getAudioContext();
-        if (ctx && ctx.state === 'suspended') {
-            ctx.resume();
-        }
-    } catch (e) { /* ignore */ }
-}
 
-function playHoverSound() {
-    resumeP5AudioIfNeeded();
+
+
+
+export function playHoverSound() {
     sounds.hover.play();
 }
 
-function playClickSound() {
-    resumeP5AudioIfNeeded();
+export function playClickSound() {
     sounds.click.play();
 }
 
 //GUI functions
-function showHealthBar(){
+export function showHealthBar(){
     textFont('Pixelify Sans')
     for(let i = 0; i < player.health; i++){
         text('❤️', 50 + 18 * i, 50);
@@ -36,7 +27,7 @@ function showHealthBar(){
 
 // gameplay functions
 
-function setStars() {
+export function setStars() {
     refreshGameLayout();
     for(let i = 0; i < width/10; i++){
         let size = random(1, 5) * gameScale;
@@ -67,7 +58,7 @@ function setStars() {
     }
 }
 
-function moveStars() {
+export function moveStars() {
     for(let i = 0; i < stars.length; i++){
         stars[i].position.x += stars[i].scrollSpeed;
 
@@ -81,7 +72,7 @@ function moveStars() {
 }
 
 /** Stars only during active play: hidden on main menu, pause, etc. */
-function updateStarFieldForState(state) {
+export function updateStarFieldForState(state) {
     const show = (state === GAME);
     for (let i = 0; i < stars.length; i++) {
         stars[i].visible = show;
@@ -91,13 +82,13 @@ function updateStarFieldForState(state) {
     }
 }
 
-function wobble(a) {
+export function wobble(a) {
     let j = gameScale / 1.5;
     a.sprite.position.x += random(-1, 1) * j;
     a.sprite.position.y += random(-1, 1) * j;
 }
 
-function flame(player) {
+export function flame(player) {
     if (!player || !player.sprite) {
         console.error('player invalid or missing');
         return false;

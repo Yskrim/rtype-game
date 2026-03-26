@@ -1,98 +1,16 @@
 // game
+import {explodeAnimate} from './explode.js'
 
 /*                      GAME LOGIC FILE                         */
 
 'use strict'
-let exp = []
-let imp = []
+
 
 let boss = null;
 let enemiesKilled = 0;
 
-function onRegularEnemyKilled() {
-    enemiesKilled++;
-    if (boss != null) return;
-    if (enemiesKilled % 20 !== 0) return;
-    spawnBoss();
-}
 
-function spawnBoss() {
-    if (boss != null || currentState !== GAME) return;
-    let y = random(height / 4, (3 * height) / 4);
-    boss = new Boss(width + 80 * gameScale, y, player2Img);
-    boss.sprite.velocity.x *= difficulty;
-    boss.sprite.velocity.y *= difficulty;
-}
 
-function bossCreateBullets() {
-    if (!boss || currentState !== GAME) return;
-    if (frameCount % Math.max(24, floor(72 / difficulty)) !== 0) return;
-
-    let bx = boss.sprite.position.x - boss.sprite.hw;
-    let by = boss.sprite.position.y;
-    let dy = player.sprite.position.y - by;
-    let dx = player.sprite.position.x - bx;
-    let hyp = sqrt(dx * dx + dy * dy);
-    if (hyp < 1e-6) return;
-
-    let baseAngle = atan2(dy, dx);
-    let spreads = [-22, -11, 0, 11, 22];
-    let spd = enemyBulletVelocity / 1.5;
-
-    for (let k = 0; k < 5; k++) {
-        let a = baseAngle + spreads[k];
-        let vx = cos(a) * spd;
-        let vy = sin(a) * spd;
-        let bullet = new Bullet(bx, by, BULLET_WIDTH, BULLET_HEIGHT, vx, vy, 1, blasterRed);
-        bullet.sprite.rotation = atan2(vy, vx);
-        enemiesBullets.push(bullet);
-    }
-}
-
-function moveBoss() {
-    if (!boss) return;
-    boss.move();
-}
-
-/* ENEMIES SHOOTING LOGIC */
-function enemyBulletsEdgeControl(){
-    for(let i = enemiesBullets.length - 1; i >= 0 ; i--) {
-        if(enemiesBullets[i].isOffScreen()){
-            enemiesBullets[i].remove()
-            enemiesBullets.splice(i,1);
-        }
-    }
-}
-
-function enemyCreateBullets(){
-    for(let i = 0; i < enemies.length; i++){
-        if(frameCount%(90 / difficulty) == 0){
-            let x = enemies[i].sprite.position.x - playerSize/2;
-            let y = enemies[i].sprite.position.y;
-            let damage = 1;
-
-            let dy = player.sprite.position.y - enemies[i].sprite.position.y;
-            let dx = player.sprite.position.x - enemies[i].sprite.position.x;
-
-            let hyp = (dx**2 + dy**2) ** 0.5;
-            if (hyp < 1e-6) continue;
-
-            let dirY = dy / hyp;
-            let dirX = dx / hyp;
-
-            let vx = dirX * (enemyBulletVelocity / 1.5);
-            let vy = dirY * (enemyBulletVelocity / 1.5);
-
-            // p5play sets angleMode(DEGREES): atan2 already returns degrees.
-            // Do not wrap with degrees() — that treats the value as radians and breaks rotation.
-            if (dirX < -0.5) {
-                let bullet = new Bullet(x, y, BULLET_WIDTH, BULLET_HEIGHT, vx, vy, damage, blasterRed);
-                bullet.sprite.rotation = atan2(vy, vx);
-                enemiesBullets.push(bullet);
-            }
-        }
-    }
-}
 
 
 let isPaused = false;

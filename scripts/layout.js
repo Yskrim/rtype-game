@@ -32,3 +32,5 @@ function applyImageToSprite(sprite, img, w, h) {
     piece.resize(Math.max(1, Math.round(w)), Math.max(1, Math.round(h)));
     sprite.image = piece;
 }
+
+export { GAME_REF_WIDTH, SPRITE_SCREEN_SCALE, gameScale, playerSize, BULLET_HEIGHT, BULLET_WIDTH, enemyBulletVelocity, BASE_PLAYER_BULLET_VX, BASE_PLAYER_BULLET_VY, PLAYER_BULLET_DAMAGE, BIG_BULLET_DAMAGE, refreshGameLayout, applyImageToSprite}

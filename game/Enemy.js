@@ -36,3 +36,43 @@ class Enemy{
 //        this.sprite.velocity.y = 0;
     }
 }
+
+/* ENEMIES SHOOTING LOGIC */
+export function enemyBulletsEdgeControl(){
+    for(let i = enemiesBullets.length - 1; i >= 0 ; i--) {
+        if(enemiesBullets[i].isOffScreen()){
+            enemiesBullets[i].remove()
+            enemiesBullets.splice(i,1);
+        }
+    }
+}
+
+export function enemyCreateBullets(){
+    for(let i = 0; i < enemies.length; i++){
+        if(frameCount%(90 / difficulty) == 0){
+            let x = enemies[i].sprite.position.x - playerSize/2;
+            let y = enemies[i].sprite.position.y;
+            let damage = 1;
+
+            let dy = player.sprite.position.y - enemies[i].sprite.position.y;
+            let dx = player.sprite.position.x - enemies[i].sprite.position.x;
+
+            let hyp = (dx**2 + dy**2) ** 0.5;
+            if (hyp < 1e-6) continue;
+
+            let dirY = dy / hyp;
+            let dirX = dx / hyp;
+
+            let vx = dirX * (enemyBulletVelocity / 1.5);
+            let vy = dirY * (enemyBulletVelocity / 1.5);
+
+            // p5play sets angleMode(DEGREES): atan2 already returns degrees.
+            // Do not wrap with degrees() — that treats the value as radians and breaks rotation.
+            if (dirX < -0.5) {
+                let bullet = new Bullet(x, y, BULLET_WIDTH, BULLET_HEIGHT, vx, vy, damage, blasterRed);
+                bullet.sprite.rotation = atan2(vy, vx);
+                enemiesBullets.push(bullet);
+            }
+        }
+    }
+}
