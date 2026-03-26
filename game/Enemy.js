@@ -4,21 +4,21 @@ class Enemy{
         this.sprite.physics = 'kinematic';
         this.sprite.rotationLock = true; 
 
-        if(img) {
-            img.resize(w, h);
-            this.sprite.image = img;
+        if (img) {
+            applyImageToSprite(this.sprite, img, w, h);
         }
         this.health = 3;
-        this.sprite.velocity.x = -random(0.5,3);
+        this.sprite.velocity.x = -random(0.5, 3) * gameScale;
 
         if(y > height/2){
-            this.sprite.velocity.y = random(0,2) * -1;
+            this.sprite.velocity.y = random(0, 2) * -1 * gameScale;
         } else {
-            this.sprite.velocity.y = random(0,2) * 1;
+            this.sprite.velocity.y = random(0, 2) * 1 * gameScale;
         }
 
-        this.sprite.position.x += random(-1,1) / 1.5;
-        this.sprite.position.y += random(-1,1) / 1.5;
+        let j = gameScale / 1.5;
+        this.sprite.position.x += random(-1, 1) * j;
+        this.sprite.position.y += random(-1, 1) * j;
     }
 
     move() {

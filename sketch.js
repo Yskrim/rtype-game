@@ -12,7 +12,6 @@ let playerImg;
 let player2Img;
 
 let player;
-let playerSize = 50;
 
 let playerBullets = [];
 let blasterBlue;
@@ -23,18 +22,11 @@ let backgroundImg;
 
 let blasterRed;
 let enemiesBullets = [];
-let enemyBulletVelocity = 10;
 
 let sfxVolumeSlider;
 let musicVolumeSlider; 
 
 let leaderboard;
-
-const PLAYER_BULLET_VX = 10;
-const PLAYER_BULLET_VY = 0;
-const PLAYER_BULLET_DAMAGE = 1;
-let BULLET_HEIGHT = playerSize/3;
-let BULLET_WIDTH = playerSize/3;
 
 
 const MAIN_MENU = 0;
@@ -100,14 +92,28 @@ function preload(){
 }
 
 
+function applyPlayerLayout() {
+    if (!player || !player.sprite || !playerImg) return;
+    let ph = playerSize;
+    let pw = ph * (playerImg.width / playerImg.height);
+    player.sprite.w = pw;
+    player.sprite.h = ph;
+    applyImageToSprite(player.sprite, playerImg, pw, ph);
+    player.maxVelocity = 10 * gameScale;
+    player.sprite.position.x = constrain(player.sprite.position.x, 0, width - pw);
+    player.sprite.position.y = constrain(player.sprite.position.y, 0, height);
+}
+
 function setup() {
     
     createCanvas(windowWidth, windowHeight);
-    playerSize = Math.max(width/25, 50);
+    refreshGameLayout();
 
     video = createVideo('assets/videos/gameover.mp4')
     video.hide()
-    player = new Player(100, height / 2, playerSize, playerSize/2, playerImg);
+    let ph = playerSize;
+    let pw = ph * (playerImg.width / playerImg.height);
+    player = new Player(100 * gameScale, height / 2, pw, ph, playerImg);
     
     setStars();
     initMainMenu();
@@ -116,6 +122,16 @@ function setup() {
     //setAnimSprites();
 }
 
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+    refreshGameLayout();
+    applyPlayerLayout();
+    for (let i = stars.length - 1; i >= 0; i--) {
+        stars[i].remove();
+    }
+    stars.length = 0;
+    setStars();
+}
 
 
 function draw() {
@@ -215,6 +231,7 @@ function saveScore() {
 
 function resetGame(){
     // Сброс переменных игры
+    refreshGameLayout();
     player.health = 5;
     clearCombatEntities();
     for(let i = 0; i < explosions.length; i++){
@@ -224,6 +241,7 @@ function resetGame(){
         imp_explosions[i].active = false;
     }
     player.reset();
+    player.maxVelocity = 10 * gameScale;
 
     isPaused = false;
     isCounting = false;

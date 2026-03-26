@@ -27,13 +27,13 @@ function playerBulletsCollisions(){
                 let temp = enemies[j].health;
                 enemies[j].health -= playerBullets[i].damage;
                 if(enemies[j].health > 0){
-                    createImpact(playerBullets[i].sprite.position.x - BULLET_WIDTH, playerBullets[i].sprite.position.y - BULLET_HEIGHT, 40);
+                    createImpact(playerBullets[i].sprite.position.x - BULLET_WIDTH, playerBullets[i].sprite.position.y - BULLET_HEIGHT, 40 * gameScale);
                     score += 20;
                 }
                 
                 if(enemies[j].health <= 0) {
                     sounds.exp.play();
-                    createExplosion(enemies[j].sprite.position.x - 40, enemies[j].sprite.position.y - 40);
+                    createExplosion(enemies[j].sprite.position.x - 40 * gameScale, enemies[j].sprite.position.y - 40 * gameScale);
                     score += 100;
                     enemies[j].sprite.remove();
                     enemies.splice(j, 1);  
@@ -73,7 +73,7 @@ function shipsCollisions(){
             }
 
             sounds.exp.play();
-            createExplosion(enemies[j].sprite.position.x - 40, enemies[j].sprite.position.y - 40);
+            createExplosion(enemies[j].sprite.position.x - 40 * gameScale, enemies[j].sprite.position.y - 40 * gameScale);
 
             player.sprite.velocity.x *= -0.5
             player.sprite.velocity.y *= -0.5
@@ -99,7 +99,7 @@ function enemyBulletCollision(){
             }
 
             sounds.hit.play()
-            createImpact(enemiesBullets[i].sprite.position.x - BULLET_WIDTH - 20, enemiesBullets[i].sprite.position.y - BULLET_HEIGHT, 40);
+            createImpact(enemiesBullets[i].sprite.position.x - BULLET_WIDTH - 20 * gameScale, enemiesBullets[i].sprite.position.y - BULLET_HEIGHT, 40 * gameScale);
             
             
             if(player.sprite.velocity.x <=1){
@@ -121,7 +121,7 @@ function bulletsCollide(){
             if (spriteAabbOverlap(enemiesBullets[j].sprite, playerBullets[i].sprite)) {
                 if(playerBullets[i].damage - enemiesBullets[j].damage <= 0){
                     sounds.hit.play();
-                    createImpact(playerBullets[i].sprite.position.x - BULLET_WIDTH, playerBullets[i].sprite.position.y - BULLET_HEIGHT, 30);
+                    createImpact(playerBullets[i].sprite.position.x - BULLET_WIDTH, playerBullets[i].sprite.position.y - BULLET_HEIGHT, 30 * gameScale);
                     playerBullets[i].remove();
                     enemiesBullets[j].remove();
                     playerBullets.splice(i,1);
@@ -129,7 +129,7 @@ function bulletsCollide(){
                     break;
                 } else {
                     sounds.hit.play();
-                    createImpact(enemiesBullets[j].sprite.position.x - BULLET_WIDTH * 2, enemiesBullets[j].sprite.position.y - BULLET_HEIGHT, 30);
+                    createImpact(enemiesBullets[j].sprite.position.x - BULLET_WIDTH * 2, enemiesBullets[j].sprite.position.y - BULLET_HEIGHT, 30 * gameScale);
                     enemiesBullets[j].remove();
                     enemiesBullets.splice(j,1);
                 }

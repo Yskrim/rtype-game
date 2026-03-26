@@ -24,8 +24,10 @@ function showHealthBar(){
 // gameplay functions
 
 function setStars() {
+    refreshGameLayout();
     for(let i = 0; i < width/10; i++){
-        let size = random(1,5);
+        let size = random(1, 5) * gameScale;
+        size = max(0.6, size);
         let star = createSprite(random(0, width), random(0, height), size, size);
         star.physics = 'none';
         star.depth = 100;
@@ -35,7 +37,7 @@ function setStars() {
         // when the game is paused — we scroll only via moveStars() during GAME.
         star.velocity.x = 0;
         star.velocity.y = 0;
-        star.scrollSpeed = -5 * (star.factor / 5);
+        star.scrollSpeed = (-5 * (star.factor / 5)) * gameScale;
         let roll = random();
         if (roll < 0.12) {
             star.shapeColor = color(170, 210, 255);
@@ -77,8 +79,9 @@ function updateStarFieldForState(state) {
 }
 
 function wobble(a) {
-    a.sprite.position.x += random(-1,1) / 1.5;
-    a.sprite.position.y += random(-1,1) / 1.5;
+    let j = gameScale / 1.5;
+    a.sprite.position.x += random(-1, 1) * j;
+    a.sprite.position.y += random(-1, 1) * j;
 }
 
 function flame(player) {
@@ -86,10 +89,16 @@ function flame(player) {
         console.error('player invalid or missing');
         return false;
     }
-    let spr = createSprite(player.sprite.position.x - 30, player.sprite.position.y + 3, random(1, 8), random(1, 8));
-    spr.velocity.y = random(- player.sprite.velocity.y,  player.sprite.velocity.y) / 3  + random(-1, 1);
-    spr.velocity.x = -2;
-    spr.velocity.x -= player.sprite.position.x/100;
+    let s = gameScale;
+    let spr = createSprite(
+        player.sprite.position.x - 30 * s,
+        player.sprite.position.y + 3 * s,
+        random(1, 8) * s,
+        random(1, 8) * s
+    );
+    spr.velocity.y = (random(- player.sprite.velocity.y,  player.sprite.velocity.y) / 3  + random(-1, 1)) * s;
+    spr.velocity.x = -2 * s;
+    spr.velocity.x -= (player.sprite.position.x / 100) * s;
     spr.friction = 0.1;
     spr.depth = player.sprite.depth 
     spr.life = random(1, 5).toFixed(0);

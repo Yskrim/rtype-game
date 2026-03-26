@@ -19,7 +19,8 @@ function explodeAnimate() {
 function explosionAnimation(){
     for(let i = 0; i < explosions.length; i++){
         if(explosions[i].active){
-            image(exp[explosions[i].index], explosions[i].x, explosions[i].y, 70, 70);
+            let d = 70 * gameScale;
+            image(exp[explosions[i].index], explosions[i].x, explosions[i].y, d, d);
             explosions[i].counter++
             if(explosions[i].counter%5 === 0){
                 explosions[i].index++;
@@ -56,7 +57,6 @@ function createExplosion(x,y){
     e.counter = 0;
     e.active = true;
     explosions.push(e);
-    console.log(e)
 }
 
 function createImpact(x,y,size){
@@ -68,7 +68,6 @@ function createImpact(x,y,size){
     e.active = true;
     e.size = size
     imp_explosions.push(e);
-    console.log(e)
 }
 
 function keyPressed() {

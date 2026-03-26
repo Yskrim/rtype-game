@@ -6,20 +6,20 @@ class Player{
     this.sprite.physics = 'kinematic';
     this.sprite.rotationLock = true; 
 
-    if(img) {
-      img.resize(w, h);
-      this.sprite.image = img;
+    if (img) {
+      applyImageToSprite(this.sprite, img, w, h);
     }
     this.health = 5;
-    this.maxVelocity = 10
+    this.maxVelocity = 10 * gameScale;
   }
 
 
   move() {
-    let accel = 0.9;
+    let accel = 0.9 * gameScale;
     let friction = 0.95;
-    this.sprite.velocity.x = constrain(this.sprite.velocity.x, -this.maxVelocity , this.maxVelocity);
-    this.sprite.velocity.y = constrain(this.sprite.velocity.y, -this.maxVelocity , this.maxVelocity);
+    let cap = this.maxVelocity;
+    this.sprite.velocity.x = constrain(this.sprite.velocity.x, -cap , cap);
+    this.sprite.velocity.y = constrain(this.sprite.velocity.y, -cap , cap);
     
     this.sprite.position.x = constrain(this.sprite.position.x, 0, width);
     this.sprite.position.y = constrain(this.sprite.position.y, 0, height);
@@ -45,7 +45,7 @@ class Player{
     }
 
   reset() {
-      this.sprite.position.x = 100;
+      this.sprite.position.x = 100 * gameScale;
       this.sprite.position.y = height / 2;
       this.sprite.velocity.x *= 0.9;
       this.sprite.velocity.y *= 0.9;

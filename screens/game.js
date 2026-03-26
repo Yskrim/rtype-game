@@ -32,8 +32,8 @@ function enemyCreateBullets(){
             let dirY = dy / hyp;
             let dirX = dx / hyp;
 
-            let vx = dirX * enemyBulletVelocity / 1.5;
-            let vy = dirY * enemyBulletVelocity / 1.5;
+            let vx = dirX * (enemyBulletVelocity / 1.5);
+            let vy = dirY * (enemyBulletVelocity / 1.5);
 
             // p5play sets angleMode(DEGREES): atan2 already returns degrees.
             // Do not wrap with degrees() — that treats the value as radians and breaks rotation.
@@ -60,8 +60,8 @@ if(!isPaused){
 function createPlayerBullet(w, h, damage, bullet_img){
     let x = player.sprite.position.x + playerSize/2;
     let y = player.sprite.position.y;
-    let vx = PLAYER_BULLET_VX;
-    let vy = PLAYER_BULLET_VY;
+    let vx = BASE_PLAYER_BULLET_VX * gameScale;
+    let vy = BASE_PLAYER_BULLET_VY * gameScale;
     let b_damage = PLAYER_BULLET_DAMAGE * damage;
     let bullet = new Bullet(x, y, BULLET_WIDTH * w, BULLET_HEIGHT * h, vx, vy, b_damage, bullet_img);
     playerBullets.push(bullet);
@@ -116,9 +116,9 @@ function playerShoot() {
     
     if(isCounting){
         loadGunCounter++;
-        let x = player.sprite.position.x - 25;
-        let y = player.sprite.position.y + 20;
-        let h = 4
+        let x = player.sprite.position.x - 25 * gameScale;
+        let y = player.sprite.position.y + 20 * gameScale;
+        let h = 4 * gameScale;
         
         if(loadGunCounter > 10 * difficulty){
             if(loadGunCounter <=20 * difficulty){
@@ -135,7 +135,7 @@ function playerShoot() {
                 }
                 fill('green');
             }
-            rect(x, y, Math.min(loadGunCounter, 50 * difficulty)/difficulty, h);
+            rect(x, y, (Math.min(loadGunCounter, 50 * difficulty) / difficulty) * gameScale, h);
         }
     }
 }
@@ -161,7 +161,9 @@ function spawnEnemies() {
         if(frameCount%240 === 0) {
             for(let i = 0; i < random (1* difficulty,5* difficulty) ; i++){
                 let y = random(height/4, 3*height/4);
-                let spr = new Enemy(width + 50, y, playerSize + 10, playerSize - 10, player2Img);
+                let hullH = playerSize * 1.15;
+                let hullW = hullH * (player2Img.width / player2Img.height);
+                let spr = new Enemy(width + 50 * gameScale, y, hullW, hullH, player2Img);
                 spr.sprite.velocity.x *= difficulty;
                 spr.sprite.velocity.y *= difficulty;
                 enemies.push(spr)
@@ -175,7 +177,6 @@ function enemySpriteEdgeControl(){
         if(enemies[j].isOffScreen()){
             enemies[j].reset();
             enemies.splice(j, 1);   
-            console.log(enemies);
             break;
         }
     }
@@ -184,7 +185,8 @@ function enemySpriteEdgeControl(){
 function moveEnemies(){
     for(let i = 0; i < enemies.length; i++){
         enemies[i].move()
-        if(enemies[i].sprite.position.y <= 30 || enemies[i].sprite.position.y >= height - 30) {
+        let edge = 30 * gameScale;
+        if(enemies[i].sprite.position.y <= edge || enemies[i].sprite.position.y >= height - edge) {
             enemies[i].sprite.velocity.y *= -1;
         }
 
